@@ -17,8 +17,38 @@
       </div>
       <div class="footer">
         <span id="topmost-status">当前提醒首次会置顶显示</span>
-        <button id="dismiss" type="button">提前关闭</button>
+        <div class="footer-actions">
+          <button id="dismiss" type="button">提前关闭</button>
+          <button id="toggle-settings" class="secondary" type="button">设置</button>
+        </div>
       </div>
+      <details id="settings-panel" class="settings-panel">
+        <summary>提醒设置</summary>
+        <form id="settings-form">
+          <label class="field checkbox-field">
+            <input id="auto-launch" name="autoLaunch" type="checkbox" />
+            <span>开机自启动</span>
+          </label>
+          <label class="field">
+            <span>提醒时长（秒）</span>
+            <input id="duration-seconds" name="reminderDurationSeconds" type="number" min="20" max="300" step="1" />
+            <small>范围 20 秒到 300 秒，默认 20 秒</small>
+          </label>
+          <label class="field">
+            <span>提醒间隔（分钟）</span>
+            <input id="interval-minutes" name="reminderIntervalMinutes" type="number" min="10" max="60" step="1" />
+            <small>范围 10 分钟到 60 分钟，默认 20 分钟</small>
+          </label>
+          <label class="field checkbox-field">
+            <input id="always-on-top" name="alwaysOnTop" type="checkbox" />
+            <span>弹窗常驻于所有窗口之上</span>
+          </label>
+          <p id="settings-feedback" class="settings-feedback" hidden></p>
+          <div class="settings-actions">
+            <button id="save-settings" type="submit">保存设置</button>
+          </div>
+        </form>
+      </details>
     </main>
     <script src="./renderer.js"></script>
   </body>
