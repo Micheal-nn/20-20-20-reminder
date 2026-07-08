@@ -7,6 +7,34 @@
 - 弹窗出现时请求任务栏图标闪烁
 - 支持用户自定义开机自启动、提醒时长、提醒间隔和是否常驻置顶
 
+## 直接下载安装
+
+普通用户不需要安装 Node.js，也不需要手动运行命令。
+
+直接使用方式：
+
+1. 打开 GitHub 仓库的 `Releases`
+2. 按你的系统下载对应安装包或可执行文件
+3. 下载后双击安装或直接运行
+
+建议下载文件：
+
+- Windows：`Setup.exe` 安装版，或 `portable.exe` 免安装版
+- macOS：`.dmg`
+- Linux：`.AppImage`
+
+如果仓库里还没有现成安装包：
+
+- 维护者只需要创建一个 `v*` 标签，例如 `v1.0.1`
+- GitHub Actions 会自动构建并把安装包挂到该版本的 `Releases`
+
+开发者发布示例：
+
+```bash
+git tag v1.0.1
+git push origin v1.0.1
+```
+
 ## 配置项
 
 - 开机自启动：默认关闭
@@ -69,6 +97,8 @@
 - macOS 打包命令为 `npm run build:mac`
 
 ## 运行
+
+这一节主要面向开发者。如果你只是使用这个应用，优先看上面的“直接下载安装”。
 
 ### 环境检测
 
@@ -143,3 +173,18 @@ npm run build:linux
 - macOS 下 Dock badge 是否可见还取决于系统通知权限设置
 - Windows 和 macOS 上相同行为由 Electron 原生窗口能力覆盖，兼容性更好
 - 系统级依赖安装和升级策略见 `REQUIREMENTS.md`
+
+## 自动产出安装包
+
+仓库已内置 GitHub Actions 发布流程：
+
+- 工作流文件：`.github/workflows/release.yml`
+- 触发方式：
+  - 手动触发 `Build And Release`
+  - 推送标签 `v*`
+
+自动产物：
+
+- Windows：安装版 `.exe` 和便携版 `.exe`
+- macOS：`.dmg` 和 `.zip`
+- Linux：`.AppImage`
