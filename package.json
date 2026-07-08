@@ -2,7 +2,14 @@
   "name": "20-20-20-break-reminder",
   "version": "1.0.0",
   "description": "Desktop reminder app for the 20-20-20 eye break rule.",
+  "author": "Micheal-nn",
+  "license": "MIT",
   "main": "src/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Micheal-nn/20-20-20-reminder.git"
+  },
+  "homepage": "https://github.com/Micheal-nn/20-20-20-reminder",
   "scripts": {
     "check:env": "node scripts/check-env.js",
     "setup:env": "node scripts/check-env.js --fix",

@@ -18,18 +18,21 @@ jobs:
           - os: ubuntu-latest
             build_script: build:linux
             artifact_name: 20-20-20-reminder-linux
-            artifact_path: outputs/build/*.AppImage
+            artifact_upload_path: outputs/build/**
+            release_files: outputs/build/**/*.AppImage
           - os: windows-latest
             build_script: build:win
             artifact_name: 20-20-20-reminder-windows
-            artifact_path: |
-              outputs/build/*.exe
+            artifact_upload_path: outputs/build/**
+            release_files: |
+              outputs/build/**/*.exe
           - os: macos-latest
             build_script: build:mac
             artifact_name: 20-20-20-reminder-macos
-            artifact_path: |
-              outputs/build/*.dmg
-              outputs/build/*.zip
+            artifact_upload_path: outputs/build/**
+            release_files: |
+              outputs/build/**/*.dmg
+              outputs/build/**/*.zip
 
     runs-on: ${{ matrix.os }}
 
@@ -49,15 +52,20 @@ jobs:
       - name: Build Desktop App
         run: npm run ${{ matrix.build_script }}
 
+      - name: List Build Output
+        run: |
+          echo "== outputs/build =="
+          find outputs/build -maxdepth 3 -type f | sort
+
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact_name }}
-          path: ${{ matrix.artifact_path }}
+          path: ${{ matrix.artifact_upload_path }}
           if-no-files-found: error
 
       - name: Attach Files To GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ matrix.artifact_path }}
+          files: ${{ matrix.release_files }}
