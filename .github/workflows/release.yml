@@ -18,17 +18,26 @@ jobs:
           - os: ubuntu-latest
             build_script: build:linux
             artifact_name: 20-20-20-reminder-linux
+            cache_paths: |
+              ~/.cache/electron
+              ~/.cache/electron-builder
             artifact_upload_path: outputs/build/**
             release_files: outputs/build/**/*.AppImage
           - os: windows-latest
             build_script: build:win
             artifact_name: 20-20-20-reminder-windows
+            cache_paths: |
+              ~\AppData\Local\electron\Cache
+              ~\AppData\Local\electron-builder\Cache
             artifact_upload_path: outputs/build/**
             release_files: |
               outputs/build/**/*.exe
           - os: macos-latest
             build_script: build:mac
             artifact_name: 20-20-20-reminder-macos
+            cache_paths: |
+              ~/Library/Caches/electron
+              ~/Library/Caches/electron-builder
             artifact_upload_path: outputs/build/**
             release_files: |
               outputs/build/**/*.dmg
@@ -43,16 +52,43 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
+
+      - name: Restore Electron Build Cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ matrix.cache_paths }}
+          key: ${{ runner.os }}-electron-cache-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-electron-cache-
 
       - name: Install Dependencies
         run: npm ci
 
       - name: Build Desktop App
-        run: npm run ${{ matrix.build_script }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEBUG: electron-builder
+        run: |
+          for attempt in 1 2 3; do
+            echo "Build attempt ${attempt}/3"
+            if npm run "${{ matrix.build_script }}"; then
+              exit 0
+            fi
+
+            if [ "${attempt}" -eq 3 ]; then
+              exit 1
+            fi
+
+            echo "Build failed on attempt ${attempt}, retrying after 15 seconds..."
+            sleep 15
+          done
 
       - name: List Build Output
+        if: always()
+        shell: bash
         run: |
           echo "== outputs/build =="
           find outputs/build -maxdepth 3 -type f | sort
