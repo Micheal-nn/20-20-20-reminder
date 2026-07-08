@@ -5,6 +5,8 @@ const REMINDER_INTERVAL_MS = 20 * 60 * 1000;
 const AUTO_HIDE_MS = 20 * 1000;
 const WINDOW_WIDTH = 360;
 const WINDOW_HEIGHT = 180;
+const IS_MAC = process.platform === "darwin";
+const IS_LINUX = process.platform === "linux";
 
 let reminderWindow = null;
 let hideTimer = null;
@@ -42,10 +44,14 @@ function createReminderWindow() {
     }
   });
 
-  reminderWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  if (IS_LINUX) {
+    reminderWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  }
+
   reminderWindow.setAlwaysOnTop(topmostEnabled, "screen-saver");
   reminderWindow.setFullScreenable(false);
   reminderWindow.setMenuBarVisibility(false);
+  reminderWindow.setHiddenInMissionControl(false);
   reminderWindow.loadFile(path.join(__dirname, "renderer", "index.html"));
 
   reminderWindow.on("blur", () => {
@@ -68,7 +74,9 @@ function disableTopmostPermanently() {
 
   topmostEnabled = false;
   reminderWindow.setAlwaysOnTop(false);
-  reminderWindow.setVisibleOnAllWorkspaces(false);
+  if (IS_LINUX) {
+    reminderWindow.setVisibleOnAllWorkspaces(false);
+  }
   reminderWindow.webContents.send("topmost-disabled");
 }
 
@@ -78,38 +86,38 @@ function stopTaskbarFlash() {
     dockFlashTimer = null;
   }
 
-  if (process.platform === "darwin") {
-    app.dock?.cancelBounce?.();
-    return;
-  }
-
   if (reminderWindow && !reminderWindow.isDestroyed()) {
     reminderWindow.flashFrame(false);
+  }
+
+  if (IS_MAC) {
+    app.dock?.setBadge?.("");
   }
 }
 
 function startTaskbarFlash() {
   stopTaskbarFlash();
 
-  if (process.platform === "darwin") {
-    dockFlashTimer = setInterval(() => {
-      app.dock?.bounce?.("informational");
-    }, 1200);
-    return;
-  }
-
   if (!reminderWindow || reminderWindow.isDestroyed()) {
     return;
   }
 
-  reminderWindow.flashFrame(true);
-  dockFlashTimer = setInterval(() => {
-    if (!reminderWindow || reminderWindow.isDestroyed() || !reminderWindow.isVisible()) {
-      return;
-    }
+  if (IS_MAC) {
+    app.dock?.show?.();
+    app.dock?.setBadge?.("•");
+  }
 
-    reminderWindow.flashFrame(true);
-  }, 1500);
+  reminderWindow.flashFrame(true);
+
+  if (IS_LINUX) {
+    dockFlashTimer = setInterval(() => {
+      if (!reminderWindow || reminderWindow.isDestroyed() || !reminderWindow.isVisible()) {
+        return;
+      }
+
+      reminderWindow.flashFrame(true);
+    }, 1500);
+  }
 }
 
 function hideReminder() {
@@ -132,12 +140,16 @@ function showReminder() {
   }
 
   hasShownReminder = true;
-  reminderWindow.setVisibleOnAllWorkspaces(topmostEnabled, { visibleOnFullScreen: true });
+  if (IS_LINUX) {
+    reminderWindow.setVisibleOnAllWorkspaces(topmostEnabled, { visibleOnFullScreen: true });
+  }
+
   reminderWindow.setAlwaysOnTop(topmostEnabled, topmostEnabled ? "screen-saver" : "normal");
   reminderWindow.setSkipTaskbar(false);
   reminderWindow.webContents.send("reminder-state", {
     topmostEnabled,
-    autoHideSeconds: AUTO_HIDE_MS / 1000
+    autoHideSeconds: AUTO_HIDE_MS / 1000,
+    platform: process.platform
   });
 
   if (topmostEnabled) {

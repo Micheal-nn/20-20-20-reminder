@@ -2,7 +2,7 @@
 
 本文件明确列出 20-20-20 Reminder 的前置依赖、推荐版本、检测方式和自动修复边界。
 
-## 1. 主实现依赖（Electron，Windows / Linux 主线）
+## 1. 主实现依赖（Electron，Windows / Linux / macOS 主线）
 
 必须满足：
 
@@ -22,6 +22,7 @@
 - `npm install` 会安装项目依赖
 - `node node_modules/electron/install.js` 会补装 Electron 运行时二进制
 - `npm run build:win` 生成 Windows 安装包和便携版
+- `npm run build:mac` 生成 macOS `dmg` 和 `zip`
 - `npm run build:linux` 生成 Linux AppImage
 
 ## 2. Windows 运行要求
@@ -63,7 +64,28 @@ sudo apt-get install -y python3-gi gir1.2-gtk-3.0
 sudo npm install -g npm@latest
 ```
 
-## 4. 自动检测与自动修复
+## 4. macOS 运行要求
+
+Electron 主线必须满足：
+
+- macOS 12 或更高
+- Node.js 20+
+- npm 10+
+- 正常图形桌面会话
+
+打包建议额外满足：
+
+- Xcode Command Line Tools
+
+推荐安装命令：
+
+```bash
+xcode-select --install
+brew install node
+npm install -g npm@latest
+```
+
+## 5. 自动检测与自动修复
 
 环境检测脚本：
 
@@ -82,6 +104,7 @@ npm run setup:env
 - 检查 Node.js 版本
 - 检查 npm 版本
 - 检查是否存在图形桌面会话
+- 在 macOS 上检查 Xcode Command Line Tools
 - 检查 `node_modules`
 - 检查 `electron` 包是否存在
 - 检查 Electron 运行时二进制是否存在

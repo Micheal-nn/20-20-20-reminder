@@ -102,6 +102,20 @@ function detectDesktopSession() {
   }
 }
 
+function detectMacBuildTooling() {
+  if (platform !== "darwin") {
+    return;
+  }
+
+  const xcodeSelect = run("xcode-select", ["-p"]);
+  if (xcodeSelect.status !== 0) {
+    addResult("warn", "macOS 构建工具", "未检测到 Xcode Command Line Tools；macOS 打包和签名能力可能不完整。");
+    return;
+  }
+
+  addResult("pass", "macOS 构建工具", `Xcode Command Line Tools: ${xcodeSelect.stdout.trim()}`);
+}
+
 function detectProjectDependencies() {
   const nodeModulesPath = path.join(projectRoot, "node_modules");
   const electronPkgPath = path.join(nodeModulesPath, "electron");
@@ -211,6 +225,7 @@ function printResults() {
 detectNode();
 detectNpm();
 detectDesktopSession();
+detectMacBuildTooling();
 detectProjectDependencies();
 detectOptionalGtkRuntime();
 
