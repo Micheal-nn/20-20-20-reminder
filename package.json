@@ -1,0 +1,39 @@
+{
+  "name": "20-20-20-break-reminder",
+  "version": "1.0.0",
+  "description": "Desktop reminder app for the 20-20-20 eye break rule.",
+  "main": "src/main.js",
+  "scripts": {
+    "check:env": "node scripts/check-env.js",
+    "setup:env": "node scripts/check-env.js --fix",
+    "start": "electron .",
+    "build:win": "electron-builder --win portable nsis",
+    "build:linux": "electron-builder --linux AppImage"
+  },
+  "build": {
+    "appId": "com.codex.twentytwentytwentyreminder",
+    "productName": "20-20-20 Reminder",
+    "directories": {
+      "output": "outputs/build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "portable",
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  }
+}

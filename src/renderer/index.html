@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>20-20-20 提醒</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="card">
+      <div class="eyebrow">20-20-20 BREAK</div>
+      <h1>请远眺 20 秒</h1>
+      <p>看向 20 英尺外，放松眼睛。提醒会在 20 秒后自动消失。</p>
+      <div class="countdown-wrap">
+        <span class="countdown-label">自动关闭倒计时</span>
+        <strong id="countdown">20s</strong>
+      </div>
+      <div class="footer">
+        <span id="topmost-status">当前提醒首次会置顶显示</span>
+        <button id="dismiss" type="button">提前关闭</button>
+      </div>
+    </main>
+    <script src="./renderer.js"></script>
+  </body>
+  </html>

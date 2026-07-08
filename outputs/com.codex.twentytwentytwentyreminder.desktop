@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=20-20-20 Reminder
+Comment=Every 20 minutes, remind to look far away for 20 seconds
+Exec=/home/michaelma/Documents/Codex/2026-07-08/20min-20s-20s/outputs/start-reminder.sh
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+StartupWMClass=20-20-20-reminder
+Icon=/home/michaelma/Documents/Codex/2026-07-08/20min-20s-20s/outputs/20-20-20-reminder.svg
+X-GNOME-UsesNotifications=true
