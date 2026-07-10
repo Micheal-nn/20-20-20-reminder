@@ -23,7 +23,7 @@
 - Windows ARM：文件名含 `win-arm64` 的 `Setup.exe` 安装版，或 `portable.exe` 免安装版
 - macOS Intel：文件名含 `mac-x64` 的 `.dmg`
 - macOS Apple Silicon（M1/M2/M3/M4）：文件名含 `mac-arm64` 的 `.dmg`
-- Linux Intel / AMD：文件名含 `linux-x64` 的 `.AppImage`
+- Linux Intel / AMD：文件名含 `linux-x86_64` 的 `.AppImage`
 - Linux ARM64：文件名含 `linux-arm64` 的 `.AppImage`
 
 如果仓库里还没有现成安装包：
