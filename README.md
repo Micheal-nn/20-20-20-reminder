@@ -17,11 +17,14 @@
 2. 按你的系统下载对应安装包或可执行文件
 3. 下载后双击安装或直接运行
 
-建议下载文件：
+建议下载文件（选择与你的设备 CPU 架构相同的版本）：
 
-- Windows：`Setup.exe` 安装版，或 `portable.exe` 免安装版
-- macOS：`.dmg`
-- Linux：`.AppImage`
+- Windows Intel / AMD：文件名含 `win-x64` 的 `Setup.exe` 安装版，或 `portable.exe` 免安装版
+- Windows ARM：文件名含 `win-arm64` 的 `Setup.exe` 安装版，或 `portable.exe` 免安装版
+- macOS Intel：文件名含 `mac-x64` 的 `.dmg`
+- macOS Apple Silicon（M1/M2/M3/M4）：文件名含 `mac-arm64` 的 `.dmg`
+- Linux Intel / AMD：文件名含 `linux-x64` 的 `.AppImage`
+- Linux ARM64：文件名含 `linux-arm64` 的 `.AppImage`
 
 如果仓库里还没有现成安装包：
 
@@ -136,7 +139,8 @@ python3 app.py
 安装依赖后执行：
 
 ```bash
-npm run build:win
+npm run build:win:x64
+npm run build:win:arm64
 ```
 
 输出目录：
@@ -153,7 +157,8 @@ outputs/build
 ## macOS 打包
 
 ```bash
-npm run build:mac
+npm run build:mac:x64
+npm run build:mac:arm64
 ```
 
 默认会生成：
@@ -164,7 +169,8 @@ npm run build:mac
 ## Linux 打包
 
 ```bash
-npm run build:linux
+npm run build:linux:x64
+npm run build:linux:arm64
 ```
 
 ## 已知边界
@@ -185,6 +191,6 @@ npm run build:linux
 
 自动产物：
 
-- Windows：安装版 `.exe` 和便携版 `.exe`
-- macOS：`.dmg` 和 `.zip`
-- Linux：`.AppImage`
+- Windows：`x64` 与 `arm64` 的安装版 `.exe` 和便携版 `.exe`
+- macOS：`x64`（Intel）与 `arm64`（Apple Silicon）的 `.dmg` 和 `.zip`
+- Linux：`x64` 与 `arm64` 的 `.AppImage`

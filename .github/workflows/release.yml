@@ -16,32 +16,59 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            build_script: build:linux
-            artifact_name: 20-20-20-reminder-linux
+            build_script: build:linux:x64
+            artifact_name: 20-20-20-reminder-linux-x64
             cache_paths: |
               ~/.cache/electron
               ~/.cache/electron-builder
             artifact_upload_path: outputs/build/**
-            release_files: outputs/build/**/*.AppImage
+            release_files: outputs/build/**/*-linux-x64.AppImage
+          - os: ubuntu-latest
+            build_script: build:linux:arm64
+            artifact_name: 20-20-20-reminder-linux-arm64
+            cache_paths: |
+              ~/.cache/electron
+              ~/.cache/electron-builder
+            artifact_upload_path: outputs/build/**
+            release_files: outputs/build/**/*-linux-arm64.AppImage
           - os: windows-latest
-            build_script: build:win
-            artifact_name: 20-20-20-reminder-windows
+            build_script: build:win:x64
+            artifact_name: 20-20-20-reminder-windows-x64
             cache_paths: |
               ~\AppData\Local\electron\Cache
               ~\AppData\Local\electron-builder\Cache
             artifact_upload_path: outputs/build/**
             release_files: |
-              outputs/build/**/*.exe
+              outputs/build/**/*-win-x64-*.exe
+          - os: windows-latest
+            build_script: build:win:arm64
+            artifact_name: 20-20-20-reminder-windows-arm64
+            cache_paths: |
+              ~\AppData\Local\electron\Cache
+              ~\AppData\Local\electron-builder\Cache
+            artifact_upload_path: outputs/build/**
+            release_files: |
+              outputs/build/**/*-win-arm64-*.exe
           - os: macos-latest
-            build_script: build:mac
-            artifact_name: 20-20-20-reminder-macos
+            build_script: build:mac:x64
+            artifact_name: 20-20-20-reminder-macos-x64
             cache_paths: |
               ~/Library/Caches/electron
               ~/Library/Caches/electron-builder
             artifact_upload_path: outputs/build/**
             release_files: |
-              outputs/build/**/*.dmg
-              outputs/build/**/*.zip
+              outputs/build/**/*-mac-x64.dmg
+              outputs/build/**/*-mac-x64.zip
+          - os: macos-latest
+            build_script: build:mac:arm64
+            artifact_name: 20-20-20-reminder-macos-arm64
+            cache_paths: |
+              ~/Library/Caches/electron
+              ~/Library/Caches/electron-builder
+            artifact_upload_path: outputs/build/**
+            release_files: |
+              outputs/build/**/*-mac-arm64.dmg
+              outputs/build/**/*-mac-arm64.zip
 
     runs-on: ${{ matrix.os }}
 

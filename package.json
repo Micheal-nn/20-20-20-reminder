@@ -1,6 +1,6 @@
 {
   "name": "20-20-20-break-reminder",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "Desktop reminder app for the 20-20-20 eye break rule.",
   "author": "Micheal-nn",
   "license": "MIT",
@@ -14,13 +14,20 @@
     "check:env": "node scripts/check-env.js",
     "setup:env": "node scripts/check-env.js --fix",
     "start": "electron .",
-    "build:mac": "electron-builder --mac dmg zip",
-    "build:win": "electron-builder --win portable nsis",
-    "build:linux": "electron-builder --linux AppImage"
+    "build:mac:x64": "electron-builder --mac dmg zip --x64",
+    "build:mac:arm64": "electron-builder --mac dmg zip --arm64",
+    "build:win:x64": "electron-builder --win portable nsis --x64",
+    "build:win:arm64": "electron-builder --win portable nsis --arm64",
+    "build:linux:x64": "electron-builder --linux AppImage --x64",
+    "build:linux:arm64": "electron-builder --linux AppImage --arm64",
+    "build:mac": "npm run build:mac:x64",
+    "build:win": "npm run build:win:x64",
+    "build:linux": "npm run build:linux:x64"
   },
   "build": {
     "appId": "com.codex.twentytwentytwentyreminder",
     "productName": "20-20-20 Reminder",
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
     "directories": {
       "output": "outputs/build"
     },
@@ -33,6 +40,12 @@
         "portable",
         "nsis"
       ]
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-${os}-${arch}-portable.${ext}"
+    },
+    "nsis": {
+      "artifactName": "${productName}-${version}-${os}-${arch}-setup.${ext}"
     },
     "mac": {
       "category": "public.app-category.healthcare-fitness",
